@@ -49,7 +49,7 @@ public class ProgramConsole {
 //
 //        clientService.creat(client);
 
-        ClientEntity client = clientService.read(20);
+        ClientEntity client = clientService.read(97);
 
 
         clientService.delete(client);
