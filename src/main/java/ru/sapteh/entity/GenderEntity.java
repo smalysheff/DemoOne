@@ -1,4 +1,4 @@
-package ru.sapteh.model;
+package ru.sapteh.entity;
 
 //POJO
 

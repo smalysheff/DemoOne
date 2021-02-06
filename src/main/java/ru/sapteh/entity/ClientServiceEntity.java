@@ -1,4 +1,4 @@
-package ru.sapteh.model;
+package ru.sapteh.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Cascade;

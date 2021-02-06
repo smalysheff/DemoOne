@@ -2,10 +2,7 @@ package ru.sapteh.service;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import ru.sapteh.dao.DAO;
-import ru.sapteh.model.GenderEntity;
-
-import java.util.List;
+import ru.sapteh.entity.GenderEntity;
 
 public class GenderService {
     private final SessionFactory factory;

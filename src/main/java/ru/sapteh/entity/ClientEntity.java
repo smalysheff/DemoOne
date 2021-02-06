@@ -1,10 +1,7 @@
-package ru.sapteh.model;
+package ru.sapteh.entity;
 
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;

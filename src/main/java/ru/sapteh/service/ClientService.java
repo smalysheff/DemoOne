@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import ru.sapteh.dao.DAO;
-import ru.sapteh.model.ClientEntity;
+import ru.sapteh.entity.ClientEntity;
 
 import java.util.List;
 
