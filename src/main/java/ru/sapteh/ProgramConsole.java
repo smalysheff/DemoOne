@@ -34,18 +34,28 @@ public class ProgramConsole {
 //        System.out.println();
 //        System.out.println(clientServiceService.read(1));
 
-        ClientEntity client = new ClientEntity();
-        client.setLastName("Ivanov");
-        client.setFirstName("Ivan");
-        client.setPatronymic("Ivanovich");
-        client.setEmail("ivanov@mail.ru");
-        client.setBirthday(new Date(723947923423L));
-        client.setRegistrationDate(new Date(23874923L));
-        client.setPhone("23423423");
-        client.setPhotoPath("/src/lib.jpg");
-        client.setGenderEntity(genderService.read('м'));
 
-        clientService.creat(client);
+        ClientEntity client = clientService.read(107);
+
+        clientService.delete(client);
+
+//        System.out.println(client);
+//
+//        client.setLastName("Petrov");
+//        client.setFirstName("Petr");
+//        client.setPatronymic("Petrovich");
+//        client.setEmail("petrov@mail.ru");
+//        client.setBirthday(new Date(7239479234238L));
+//        client.setRegistrationDate(new Date(238749231L));
+//        client.setPhone("23423423");
+//        client.setPhotoPath("/src/lib.jpg");
+//        client.setGenderEntity(genderService.read('м'));
+//
+//        clientService.update(client);
+//
+//        System.out.println(client);
+
+
 
 //        ClientEntity client = clientService.read(97);
 

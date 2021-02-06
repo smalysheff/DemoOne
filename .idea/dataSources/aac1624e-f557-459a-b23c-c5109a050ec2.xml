@@ -1098,14 +1098,12 @@ AttachedProductID</ColNames>
       <RefTableName>client</RefTableName>
       <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
     </foreign-key>
     <foreign-key id="336" parent="297" name="fk_ClientService_Service">
       <ColNames>ServiceID</ColNames>
       <RefTableName>service</RefTableName>
       <RefColNames>ID</RefColNames>
       <OnUpdate>cascade</OnUpdate>
-      <OnDelete>cascade</OnDelete>
     </foreign-key>
     <column id="337" parent="298" name="ID">
       <Position>1</Position>
