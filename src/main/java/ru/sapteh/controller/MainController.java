@@ -6,12 +6,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 
 public class MainController {
+
+    @FXML
+    private ImageView mainImage;
 
     @FXML
     private Button buttonExit;
@@ -30,6 +34,9 @@ public class MainController {
 
     @FXML
     public void initialize(){
+
+        getMainImage();
+
         buttonExit.setOnAction(event -> {
             buttonExit.getScene().getWindow().hide();
         });
@@ -49,6 +56,18 @@ public class MainController {
             stage.showAndWait();
 
         } );
+
+    }
+
+
+    private void getMainImage(){
+        try {
+            InputStream pathImage = new FileInputStream("./src/main/resources/images/service_logo.png");
+            Image image = new Image(pathImage);
+            mainImage.setImage(image);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 

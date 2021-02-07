@@ -2,20 +2,20 @@ package ru.sapteh.service;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import ru.sapteh.entity.GenderEntity;
+import ru.sapteh.entity.Gender;
 
-public class GenderService {
+public class GenderDaoImp {
     private final SessionFactory factory;
 
-    public GenderService (SessionFactory factory) {
+    public GenderDaoImp(SessionFactory factory) {
         this.factory = factory;
     }
 
 
 
-    public GenderEntity read(char code) {
+    public Gender read(char code) {
         try(Session session = factory.openSession()){
-            GenderEntity entity = session.get(GenderEntity.class, code);
+            Gender entity = session.get(Gender.class, code);
             return entity;
         }
     }

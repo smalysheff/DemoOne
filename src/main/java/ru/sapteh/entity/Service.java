@@ -2,6 +2,10 @@ package ru.sapteh.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //POJO
@@ -13,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "service")
-public class ServiceEntity {
+public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +37,7 @@ public class ServiceEntity {
     private String mainImagePath;
 
     @OneToMany(mappedBy = "service")
-//    @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<ClientServiceEntity> clientServiceEntities;
+    private Set<ClientService> clientServiceSet;
 
     @Override
     public String toString() {

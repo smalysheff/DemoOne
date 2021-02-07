@@ -3,23 +3,25 @@ package ru.sapteh;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.sapteh.dao.DAO;
-import ru.sapteh.entity.ClientEntity;
-import ru.sapteh.entity.ClientServiceEntity;
-import ru.sapteh.entity.ServiceEntity;
-import ru.sapteh.service.ClientServiceService;
-import ru.sapteh.service.GenderService;
-import ru.sapteh.service.ServiceService;
-import ru.sapteh.service.ClientService;
+import ru.sapteh.entity.Client;
+import ru.sapteh.entity.ClientService;
+import ru.sapteh.entity.Service;
+import ru.sapteh.service.ClientDaoImp;
+import ru.sapteh.service.ClientServiceDaoImp;
+import ru.sapteh.service.GenderDaoImp;
+import ru.sapteh.service.ServiceDaoImp;
 
-import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 public class ProgramConsole {
     public static void main(String[] args) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        DAO<ClientEntity, Integer> clientService = new ClientService(factory);
-        DAO<ServiceEntity, Integer> serviceService= new ServiceService(factory);
-        DAO<ClientServiceEntity, Integer> clientServiceService = new ClientServiceService(factory);
-        GenderService genderService = new GenderService(factory);
+
+        DAO<Client, Integer> clientDaoImp = new ClientDaoImp(factory);
+        DAO<Service, Integer> serviceDaoImp= new ServiceDaoImp(factory);
+        DAO<ClientService, Integer> clientServiceDaoImp = new ClientServiceDaoImp(factory);
+        GenderDaoImp genderDaoImp = new GenderDaoImp(factory);
 
 //        System.out.println("===============================================================================\n");
 //        clientService.readByAll().stream().forEach(System.out::println);
@@ -35,9 +37,36 @@ public class ProgramConsole {
 //        System.out.println(clientServiceService.read(1));
 
 
-        ClientEntity client = clientService.read(107);
+        Client client = clientDaoImp.read(87);
 
-        clientService.delete(client);
+
+
+//        List<ClientService> clientServiceList = clientServiceDaoImp.readByAll();
+//
+////        clientServiceList.stream().forEach(System.out :: println);
+//
+//        int count = 1;
+//        for (ClientService clientService : clientServiceList){
+//            if(clientService.getClient().getId() == (client.getId())){
+//                count++;
+//            }
+//        }
+//
+//        System.out.println(count);
+
+        List<ClientService> clientServiceList1 = clientServiceDaoImp.readByAll();
+        System.out.println(clientServiceList1);
+
+
+        Set<ClientService> clientServiceList = client.getClientServiceSet();
+
+        System.out.println(clientServiceList);
+
+//        ClientService clientService = clientServiceDaoImp.read(10);
+//
+//
+
+//        clientService.delete(client);
 
 //        System.out.println(client);
 //

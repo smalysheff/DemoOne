@@ -15,22 +15,18 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "clientService")
-public class ClientServiceEntity {
+public class ClientService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "clientID")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ClientEntity client;
+    private Client client;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "serviceID")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private ServiceEntity service;
+    private Service service;
 
     @Column
     private Date startTime;

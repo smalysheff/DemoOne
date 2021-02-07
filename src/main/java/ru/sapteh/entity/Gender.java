@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "gender")
-public class GenderEntity {
+public class Gender {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private char Code;

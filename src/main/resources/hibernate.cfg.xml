@@ -13,9 +13,9 @@
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>
 
-        <mapping class="ru.sapteh.entity.ClientEntity"/>
-        <mapping class="ru.sapteh.entity.GenderEntity"/>
-        <mapping class="ru.sapteh.entity.ServiceEntity"/>
-        <mapping class="ru.sapteh.entity.ClientServiceEntity"/>
+        <mapping class="ru.sapteh.entity.Client"/>
+        <mapping class="ru.sapteh.entity.Gender"/>
+        <mapping class="ru.sapteh.entity.Service"/>
+        <mapping class="ru.sapteh.entity.ClientService"/>
     </session-factory>
 </hibernate-configuration>

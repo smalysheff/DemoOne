@@ -1,61 +1,64 @@
 package ru.sapteh.service;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import ru.sapteh.dao.DAO;
-import ru.sapteh.entity.ClientEntity;
+import ru.sapteh.entity.Client;
 
 import java.util.List;
 
-public class ClientService implements DAO<ClientEntity, Integer> {
+public class ClientDaoImp implements DAO<Client, Integer> {
     private final SessionFactory factory;
 
-    public ClientService(SessionFactory factory){
+    public ClientDaoImp(SessionFactory factory){
         this.factory = factory;
     }
 
     @Override
-    public void creat(ClientEntity clientEntity) {
+    public void creat(Client client) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.save(clientEntity);
+            session.save(client);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public ClientEntity read(Integer key) {
+    public Client read(Integer key) {
         try(Session session = factory.openSession()){
-            return session.get(ClientEntity.class, key);
+            Client client = session.get(Client.class, key);
+            return client;
         }
     }
 
     @Override
-    public List<ClientEntity> readByAll() {
+    public List<Client> readByAll() {
         try(Session session = factory.openSession()) {
-            String hql = "FROM ClientEntity";
-            Query<ClientEntity> query = session.createQuery(hql);
-            List<ClientEntity> clientEntities = query.list();
+            String hql = "FROM Client";
+            Query<Client> query = session.createQuery(hql);
+            List<Client> clientEntities = query.list();
             return clientEntities;
         }
     }
 
     @Override
-    public void update(ClientEntity clientEntity) {
+    public void update(Client client) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.update(clientEntity);
+            session.update(client);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public void delete(ClientEntity clientEntity) {
+    public void delete(Client client) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.delete(clientEntity);
+            session.delete(client);
             session.getTransaction().commit();
         }
     }
+
 }

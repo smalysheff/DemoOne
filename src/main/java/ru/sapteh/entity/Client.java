@@ -4,8 +4,8 @@ package ru.sapteh.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import javax.transaction.Transactional;
+import java.util.*;
 
 //POJO
 
@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "client")
-public class ClientEntity {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -47,11 +47,10 @@ public class ClientEntity {
 
     @ManyToOne
     @JoinColumn(name = "GenderCode")
-    private GenderEntity GenderEntity;
+    private Gender Gender;
 
     @OneToMany(mappedBy = "client")
-//    @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<ClientServiceEntity> clientServiceEntities;
+    private Set<ClientService> clientServiceSet;
 
 
     @Override
@@ -66,7 +65,7 @@ public class ClientEntity {
                 ", Email='" + Email + '\'' +
                 ", Phone='" + Phone + '\'' +
                 ", PhotoPath='" + PhotoPath + '\'' +
-                ", Gender=" + GenderEntity +
+                ", Gender=" + Gender +
                 '}';
     }
 }

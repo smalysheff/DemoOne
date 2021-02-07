@@ -1,60 +1,62 @@
 package ru.sapteh.service;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import ru.sapteh.dao.DAO;
-import ru.sapteh.entity.ClientServiceEntity;
+import ru.sapteh.entity.Service;
 
 import java.util.List;
 
-public class ClientServiceService implements DAO<ClientServiceEntity, Integer> {
+public class ServiceDaoImp implements DAO<Service, Integer> {
     private final SessionFactory factory;
 
-    public ClientServiceService(SessionFactory factory){
+    public ServiceDaoImp(SessionFactory factory){
         this.factory = factory;
     }
 
     @Override
-    public void creat(ClientServiceEntity clientServiceEntity) {
+    public void creat(Service service) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.save(clientServiceEntity);
+            session.save(service);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public ClientServiceEntity read(Integer key) {
+    public Service read(Integer key) {
         try(Session session = factory.openSession()){
-            return session.get(ClientServiceEntity.class, key);
+            Service service = session.get(Service.class, key);
+            return service;
         }
     }
 
     @Override
-    public List<ClientServiceEntity> readByAll() {
+    public List<Service> readByAll() {
         try(Session session = factory.openSession()) {
-            String hql = "FROM ClientServiceEntity";
-            Query<ClientServiceEntity> query = session.createQuery(hql);
-            List<ClientServiceEntity> clients = query.list();
-            return clients;
+            String hql = "FROM Service ";
+            Query<Service> query = session.createQuery(hql);
+            List<Service> serviceEntities = query.list();
+            return serviceEntities;
         }
     }
 
     @Override
-    public void update(ClientServiceEntity client) {
+    public void update(Service service) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.update(client);
+            session.update(service);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public void delete(ClientServiceEntity client) {
+    public void delete(Service service) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
-            session.delete(client);
+            session.delete(service);
             session.getTransaction().commit();
         }
     }
