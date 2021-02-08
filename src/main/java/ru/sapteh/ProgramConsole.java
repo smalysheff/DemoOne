@@ -23,6 +23,8 @@ public class ProgramConsole {
         DAO<ClientService, Integer> clientServiceDaoImp = new ClientServiceDaoImp(factory);
         GenderDaoImp genderDaoImp = new GenderDaoImp(factory);
 
+        System.out.println();
+
 //        System.out.println("===============================================================================\n");
 //        clientService.readByAll().stream().forEach(System.out::println);
 //        System.out.println("===============================================================================\n");
