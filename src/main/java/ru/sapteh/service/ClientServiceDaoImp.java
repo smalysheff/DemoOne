@@ -17,7 +17,7 @@ public class ClientServiceDaoImp implements DAO<ClientService, Integer> {
     }
 
     @Override
-    public void creat(ClientService clientService) {
+    public void create(ClientService clientService) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
             session.save(clientService);
@@ -26,19 +26,21 @@ public class ClientServiceDaoImp implements DAO<ClientService, Integer> {
     }
 
     @Override
-    public ClientService read(Integer key) {
+    public ClientService findById(Integer key) {
         try(Session session = factory.openSession()){
             ClientService clientService = session.get(ClientService.class, key);
+            Hibernate.initialize(clientService);
             return clientService;
         }
     }
 
     @Override
-    public List<ClientService> readByAll() {
+    public List<ClientService> findByAll() {
         try(Session session = factory.openSession()) {
             String hql = "FROM ClientService";
             Query<ClientService> query = session.createQuery(hql);
             List<ClientService> clients = query.list();
+            Hibernate.initialize(clients);
             return clients;
         }
     }

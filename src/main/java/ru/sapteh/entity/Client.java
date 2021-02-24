@@ -49,9 +49,12 @@ public class Client {
     @JoinColumn(name = "GenderCode")
     private Gender Gender;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ClientService> clientServiceSet;
 
+
+    @ManyToMany(mappedBy = "clients", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Tag> tags;
 
     @Override
     public String toString() {

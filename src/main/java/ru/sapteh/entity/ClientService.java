@@ -10,9 +10,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "clientService")
 public class ClientService {
@@ -29,7 +27,7 @@ public class ClientService {
     private Service service;
 
     @Column
-    private Date startTime;
+    private Date startTime = new Date();
 
     @Column
     private String comment;

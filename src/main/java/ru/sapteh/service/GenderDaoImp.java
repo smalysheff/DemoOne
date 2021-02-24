@@ -13,7 +13,7 @@ public class GenderDaoImp {
 
 
 
-    public Gender read(char code) {
+    public Gender findById(char code) {
         try(Session session = factory.openSession()){
             Gender entity = session.get(Gender.class, code);
             return entity;

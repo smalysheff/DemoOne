@@ -12,9 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "service")
 public class Service {
@@ -36,7 +34,7 @@ public class Service {
     @Column
     private String mainImagePath;
 
-    @OneToMany(mappedBy = "service")
+    @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ClientService> clientServiceSet;
 
     @Override

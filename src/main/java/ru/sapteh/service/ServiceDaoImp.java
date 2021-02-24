@@ -17,7 +17,7 @@ public class ServiceDaoImp implements DAO<Service, Integer> {
     }
 
     @Override
-    public void creat(Service service) {
+    public void create(Service service) {
         try(Session session = factory.openSession()){
             session.beginTransaction();
             session.save(service);
@@ -26,19 +26,21 @@ public class ServiceDaoImp implements DAO<Service, Integer> {
     }
 
     @Override
-    public Service read(Integer key) {
+    public Service findById(Integer key) {
         try(Session session = factory.openSession()){
             Service service = session.get(Service.class, key);
+            Hibernate.initialize(service);
             return service;
         }
     }
 
     @Override
-    public List<Service> readByAll() {
+    public List<Service> findByAll() {
         try(Session session = factory.openSession()) {
             String hql = "FROM Service ";
             Query<Service> query = session.createQuery(hql);
             List<Service> serviceEntities = query.list();
+            Hibernate.initialize(serviceEntities);
             return serviceEntities;
         }
     }

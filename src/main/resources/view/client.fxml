@@ -3,24 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.sapteh.controller.ClientController">
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.sapteh.controller.ClientController">
    <children>
       <TableView fx:id="tableViewClient" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="5.0">
         <columns>
-          <TableColumn fx:id="id" prefWidth="75.0" text="id" />
-          <TableColumn fx:id="gender" prefWidth="75.0" text="gender" />
-            <TableColumn fx:id="firstName" prefWidth="75.0" text="firstName" />
-            <TableColumn fx:id="lastName" prefWidth="75.0" text="lastName" />
-            <TableColumn fx:id="patronymic" prefWidth="75.0" text="patronymic" />
+          <TableColumn fx:id="id" prefWidth="39.0" text="id" />
+          <TableColumn fx:id="gender" prefWidth="61.0" text="gender" />
+            <TableColumn fx:id="firstName" prefWidth="100.0" text="firstName" />
+            <TableColumn fx:id="lastName" prefWidth="93.0" text="lastName" />
+            <TableColumn fx:id="patronymic" prefWidth="82.0" text="patronymic" />
             <TableColumn fx:id="birthday" prefWidth="75.0" text="birthday" />
             <TableColumn fx:id="phone" prefWidth="75.0" text="phone" />
             <TableColumn fx:id="email" prefWidth="75.0" text="email" />
             <TableColumn fx:id="registrationDate" prefWidth="75.0" text="registrationDate" />
             <TableColumn fx:id="lastVisitDate" prefWidth="75.0" text="lastVisitDate" />
             <TableColumn fx:id="countVisit" prefWidth="75.0" text="countVisit" />
-            <TableColumn fx:id="tags" prefWidth="75.0" text="tags" />
+            <TableColumn fx:id="tags" prefWidth="79.0" text="tags" />
         </columns>
       </TableView>
-      <ScrollBar layoutX="786.0" layoutY="149.0" orientation="VERTICAL" AnchorPane.bottomAnchor="20.0" AnchorPane.topAnchor="5.0" />
    </children>
 </AnchorPane>
