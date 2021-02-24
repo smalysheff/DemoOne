@@ -56,6 +56,7 @@ public class ClientController {
     @FXML
     public void initialize(){
 
+        //Init tableView
         initDataToDatabase();
 
         id.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getId()));
@@ -79,10 +80,9 @@ public class ClientController {
         });
 
         countVisit.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getClientServiceSet().size()));
-        tags.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTags().iterator().next().getColor()));
 
-        tags.setCellFactory(column -> new TableCell<Client, String>() {
-            int count = 0;
+        tags.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTags().iterator().next().getColor()));
+        tags.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 if(item != null || !empty){
@@ -94,8 +94,10 @@ public class ClientController {
             }
         });
 
-
         tableViewClient.setItems(clientObservableList);
+
+
+
 
     }
 
