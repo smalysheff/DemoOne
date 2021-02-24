@@ -85,20 +85,11 @@ public class ClientController {
             int count = 0;
             @Override
             protected void updateItem(String item, boolean empty) {
-
-                System.out.println(count++ + ")" + item);
-                if (item == null || empty) {
-                    setText("null");
-                    setStyle("-fx-background-color: red");
-                } else {
-                    if (item.equals("red")) {
-                        setText("");
-                        setStyle("-fx-background-color: red");
-                    } else if (item.equals("green")) {
-                        setText("");
-                        setStyle("-fx-background-color: green");
-                    }
-
+                if(item != null || !empty){
+                    if(item.equalsIgnoreCase("green"))
+                        setStyle("-fx-background-color: #80ee80");
+                    if(item.equalsIgnoreCase("red"))
+                        setStyle("-fx-background-color: #db9898");
                 }
             }
         });
