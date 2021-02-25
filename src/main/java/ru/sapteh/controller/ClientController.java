@@ -1,8 +1,6 @@
 package ru.sapteh.controller;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,15 +10,11 @@ import org.hibernate.cfg.Configuration;
 import ru.sapteh.dao.DAO;
 import ru.sapteh.entity.Client;
 import ru.sapteh.entity.ClientService;
-import ru.sapteh.entity.Tag;
 import ru.sapteh.service.ClientDaoImp;
 import ru.sapteh.service.ClientServiceDaoImp;
 
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class ClientController {
 
@@ -60,13 +54,18 @@ public class ClientController {
     private TableColumn <Client, String> tags;
 
 
-    //Choice box size
+    //ComboBox size
     @FXML
     private ComboBox<Integer> comboBoxSize;
-
     @FXML
     private Label numberOfRecordsLbl;
 
+    //Pagination pages
+    @FXML
+    private Pagination pagination;
+
+    private int valuesFromDatabaseSize;
+    private int totalPage;
 
 
     //initialize method
@@ -74,31 +73,58 @@ public class ClientController {
     public void initialize(){
 
         //Init tableView
-        initDataToDatabase();
+        initDataFromDatabase();
         initTableView();
 
-        //choiceBox
-        int clientNumberOfRecords = clientObservableList.size();
-        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, clientNumberOfRecords);
+        //ComboBox
+        valuesFromDatabaseSize = clientObservableList.size();
+        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, valuesFromDatabaseSize);
         comboBoxSize.setItems(options);
         comboBoxSize.setValue(options.get(0));
-        comboBoxSize.valueProperty().addListener((observableValue, integer, t1) -> {
-//
-//            tableViewClient.si
-        });
+        comboBoxSize.valueProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                int valueComboBox = comboBoxSize.getValue();
 
-        //Number of records
-        numberOfRecordsLbl.setText("number of records: " + clientNumberOfRecords);
+                totalPage = (int) (Math.ceil(valuesFromDatabaseSize * 1.0 / valueComboBox));
+
+                //Pagination pages
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                tableViewClient.setItems(
+                        FXCollections.observableArrayList(
+                                clientObservableList.subList(pagination.getCurrentPageIndex(), newValue))
+
+                );
+                pagination.currentPageIndexProperty()
+                        .addListener((observable1, oldValue1, newValue1) -> {
+                            tableViewClient.setItems(
+                                    FXCollections.observableArrayList(
+                                            clientObservableList.subList(
+                                                    valueComboBox * (newValue1.intValue() + 1)
+                                                            -  valueComboBox,
+                                                    valueComboBox * (newValue1.intValue() + 1)))
+                            );
+                        });
+            });
+
+        //style pagination
+        pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+
+        //Number of records label
+        numberOfRecordsLbl.setText("number of records: " + valuesFromDatabaseSize);
+
     }
 
-    private void initDataToDatabase(){
+    private void initDataFromDatabase(){
         DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);
         DAO<ClientService, Integer> clientServiceDaoImpl = new ClientServiceDaoImp(factory);
         clientServiceDaoImpl.findByAll();
-        clientObservableList.addAll(clientDaoImpl.findByAll());
+        List<Client> listClientsFromDatabase = clientDaoImpl.findByAll();
+        clientObservableList.addAll(listClientsFromDatabase);
     }
 
     private void initTableView(){
+
         tableViewClient.setItems(clientObservableList);
         id.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getId()));
         gender.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getGender().getCode()));
@@ -135,6 +161,5 @@ public class ClientController {
             }
         });
     }
-
 
 }
