@@ -59,12 +59,15 @@ public class ClientController {
     @FXML
     private TableColumn <Client, String> tags;
 
+
     //Choice box size
-    ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20,50);
     @FXML
-    private ChoiceBox<Integer> choiceBoxSize;
+    private ComboBox<Integer> comboBoxSize;
+
     @FXML
     private Label numberOfRecordsLbl;
+
+
 
     //initialize method
     @FXML
@@ -75,15 +78,17 @@ public class ClientController {
         initTableView();
 
         //choiceBox
-        choiceBoxSize.setItems(options);
-        choiceBoxSize.setValue(options.get(0));
-        choiceBoxSize.valueProperty().addListener((observableValue, integer, t1) -> {
+        int clientNumberOfRecords = clientObservableList.size();
+        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, clientNumberOfRecords);
+        comboBoxSize.setItems(options);
+        comboBoxSize.setValue(options.get(0));
+        comboBoxSize.valueProperty().addListener((observableValue, integer, t1) -> {
 //
 //            tableViewClient.si
         });
 
         //Number of records
-        numberOfRecordsLbl.setText("number of records: " + tableViewClient.getItems().size());
+        numberOfRecordsLbl.setText("number of records: " + clientNumberOfRecords);
     }
 
     private void initDataToDatabase(){

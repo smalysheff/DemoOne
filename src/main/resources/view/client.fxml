@@ -21,7 +21,7 @@
             <TableColumn fx:id="tags" prefWidth="79.0" text="tags" />
         </columns>
       </TableView>
-      <ChoiceBox fx:id="choiceBoxSize" layoutX="14.0" layoutY="650.0" prefHeight="25.0" prefWidth="52.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" />
+      <ComboBox fx:id="comboBoxSize" layoutX="14.0" layoutY="650.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" />
       <Label fx:id="numberOfRecordsLbl" layoutX="10.0" layoutY="660.0" text="number of records" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="12.0" />
    </children>
 </AnchorPane>
