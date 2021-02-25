@@ -1,12 +1,12 @@
 package ru.sapteh.controller;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.sapteh.dao.DAO;
@@ -24,41 +24,77 @@ import java.util.Set;
 
 public class ClientController {
 
-    ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
+    private final SessionFactory factory;
+
+    public ClientController(){
+        factory = new Configuration().configure().buildSessionFactory();
+    }
+
+    private final ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
 
     @FXML
-    TableView<Client> tableViewClient;
+    private TableView<Client> tableViewClient;
     @FXML
-    TableColumn <Client, Integer> id;
+    private TableColumn <Client, Integer> id;
     @FXML
-    TableColumn <Client, Character> gender;
+    private TableColumn <Client, Character> gender;
     @FXML
-    TableColumn <Client, String> firstName;
+    private TableColumn <Client, String> firstName;
     @FXML
-    TableColumn <Client, String> lastName;
+    private TableColumn <Client, String> lastName;
     @FXML
-    TableColumn <Client, String> patronymic;
+    private TableColumn <Client, String> patronymic;
     @FXML
-    TableColumn <Client, Date> birthday;
+    private TableColumn <Client, Date> birthday;
     @FXML
-    TableColumn <Client, String> phone;
+    private TableColumn <Client, String> phone;
     @FXML
-    TableColumn <Client, String> email;
+    private TableColumn <Client, String> email;
     @FXML
-    TableColumn <Client, Date> registrationDate;
+    private TableColumn <Client, Date> registrationDate;
     @FXML
-    TableColumn <Client, String> lastVisitDate;
+    private TableColumn <Client, String> lastVisitDate;
     @FXML
-    TableColumn <Client, Integer> countVisit;
+    private TableColumn <Client, Integer> countVisit;
     @FXML
-    TableColumn <Client, String> tags;
+    private TableColumn <Client, String> tags;
 
+    //Choice box size
+    ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20,50);
+    @FXML
+    private ChoiceBox<Integer> choiceBoxSize;
+    @FXML
+    private Label numberOfRecordsLbl;
+
+    //initialize method
     @FXML
     public void initialize(){
 
         //Init tableView
         initDataToDatabase();
+        initTableView();
 
+        //choiceBox
+        choiceBoxSize.setItems(options);
+        choiceBoxSize.setValue(options.get(0));
+        choiceBoxSize.valueProperty().addListener((observableValue, integer, t1) -> {
+//
+//            tableViewClient.si
+        });
+
+        //Number of records
+        numberOfRecordsLbl.setText("number of records: " + tableViewClient.getItems().size());
+    }
+
+    private void initDataToDatabase(){
+        DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);
+        DAO<ClientService, Integer> clientServiceDaoImpl = new ClientServiceDaoImp(factory);
+        clientServiceDaoImpl.findByAll();
+        clientObservableList.addAll(clientDaoImpl.findByAll());
+    }
+
+    private void initTableView(){
+        tableViewClient.setItems(clientObservableList);
         id.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getId()));
         gender.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getGender().getCode()));
         firstName.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getFirstName()));
@@ -68,23 +104,18 @@ public class ClientController {
         phone.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getPhone()));
         email.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getEmail()));
         registrationDate.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getRegistrationDate()));
-
         lastVisitDate.setCellValueFactory(c -> {
-           Set<ClientService> clientServices = c.getValue().getClientServiceSet();
-           if(clientServices.size() != 0){
-
-               Date startTime = clientServices.stream()
-                       .max(Comparator.comparing(ClientService::getStartTime))
-                       .get().getStartTime();
-               return new SimpleObjectProperty<>(
-                       new SimpleDateFormat("dd-MM-yyyy").format(startTime));
-           } else
-                return new SimpleObjectProperty<>("");
+            Set<ClientService> clientServiceSet = c.getValue().getClientServiceSet();
+            if(clientServiceSet.size() != 0){
+                Date startTime = clientServiceSet.stream()
+                        .max(Comparator.comparing(ClientService::getStartTime))
+                        .get().getStartTime();
+                return new SimpleObjectProperty<>(
+                        new SimpleDateFormat("dd.MM.yyyy").format(startTime)
+                );
+            } return new SimpleObjectProperty<>("");
         });
-
         countVisit.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getClientServiceSet().size()));
-
-
 
         tags.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTags().iterator().next().getColor()));
         tags.setCellFactory(column -> new TableCell<>() {
@@ -98,22 +129,6 @@ public class ClientController {
                 }
             }
         });
-
-        tableViewClient.setItems(clientObservableList);
-
-
-
-
-    }
-
-    void initDataToDatabase(){
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);
-        DAO<ClientService, Integer> clientServiceDaoImpl = new ClientServiceDaoImp(factory);
-        clientServiceDaoImpl.findByAll();
-        clientObservableList.addAll(clientDaoImpl.findByAll());
-
-        factory.close();
     }
 
 

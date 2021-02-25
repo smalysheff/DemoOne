@@ -22,12 +22,7 @@ public class ProgramConsole {
 
             Set<ClientService> clientServiceSet = client.getClientServiceSet();
             if(clientServiceSet.size() != 0)
-
-                for(ClientService clientService : clientServiceSet){
-                    Date startTime = clientService.getStartTime();
-                    System.out.println(startTime);
-                }
-
+                System.out.println(clientServiceSet);
 
 
 

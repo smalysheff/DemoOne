@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.sapteh.controller.ClientController">
    <children>
-      <TableView fx:id="tableViewClient" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="5.0">
+      <TableView fx:id="tableViewClient" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="5.0">
         <columns>
           <TableColumn fx:id="id" prefWidth="39.0" text="id" />
           <TableColumn fx:id="gender" prefWidth="61.0" text="gender" />
@@ -21,5 +21,7 @@
             <TableColumn fx:id="tags" prefWidth="79.0" text="tags" />
         </columns>
       </TableView>
+      <ChoiceBox fx:id="choiceBoxSize" layoutX="14.0" layoutY="650.0" prefHeight="25.0" prefWidth="52.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" />
+      <Label fx:id="numberOfRecordsLbl" layoutX="10.0" layoutY="660.0" text="number of records" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="12.0" />
    </children>
 </AnchorPane>
