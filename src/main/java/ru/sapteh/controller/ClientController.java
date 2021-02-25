@@ -72,7 +72,10 @@ public class ClientController {
         lastVisitDate.setCellValueFactory(c -> {
            Set<ClientService> clientServices = c.getValue().getClientServiceSet();
            if(clientServices.size() != 0){
-               Date startTime = clientServices.stream().max(Comparator.comparing(ClientService::getStartTime)).get().getStartTime();
+
+               Date startTime = clientServices.stream()
+                       .max(Comparator.comparing(ClientService::getStartTime))
+                       .get().getStartTime();
                return new SimpleObjectProperty<>(
                        new SimpleDateFormat("dd-MM-yyyy").format(startTime));
            } else
@@ -80,6 +83,8 @@ public class ClientController {
         });
 
         countVisit.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getClientServiceSet().size()));
+
+
 
         tags.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTags().iterator().next().getColor()));
         tags.setCellFactory(column -> new TableCell<>() {

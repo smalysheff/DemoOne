@@ -11,7 +11,6 @@ import java.util.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

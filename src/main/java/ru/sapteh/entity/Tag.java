@@ -17,11 +17,11 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(name = "Title")
     @NonNull
     private String title;
 
-    @Column
+    @Column(name = "Color")
     @NonNull
     private String color;
 
