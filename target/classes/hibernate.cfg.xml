@@ -19,5 +19,6 @@
         <mapping class="ru.sapteh.entity.Service"/>
         <mapping class="ru.sapteh.entity.ClientService"/>
         <mapping class="ru.sapteh.entity.Tag"/>
+        <mapping class="ru.sapteh.entity.User"/>
     </session-factory>
 </hibernate-configuration>
