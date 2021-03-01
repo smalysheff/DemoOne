@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.sapteh.controller.ClientController">
    <children>
-      <TableView fx:id="tableViewClient" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="5.0">
+      <TableView fx:id="tableViewClient" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
         <columns>
           <TableColumn fx:id="id" prefWidth="39.0" text="id" />
           <TableColumn fx:id="gender" prefWidth="61.0" text="gender" />
@@ -24,5 +24,10 @@
       <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="650.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" />
       <Label fx:id="numberOfRecordsLbl" layoutX="10.0" layoutY="660.0" text="number of records" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="12.0" />
       <Pagination fx:id="pagination" layoutX="375.0" layoutY="617.0" prefHeight="56.0" prefWidth="200.0" AnchorPane.bottomAnchor="27.0" />
+      <ComboBox fx:id="comboBoxGeneral" layoutX="90.0" layoutY="21.0" prefWidth="150.0" AnchorPane.topAnchor="20.0" />
+      <ComboBox fx:id="comboBoxGender" layoutX="90.0" layoutY="56.0" prefWidth="150.0" AnchorPane.topAnchor="60.0" />
+      <TextField layoutX="266.0" layoutY="20.0" prefHeight="25.0" prefWidth="292.0" />
+      <Label layoutX="10.0" layoutY="24.0" text="General filter" />
+      <Label layoutX="10.0" layoutY="64.0" text="Gender filter" />
    </children>
 </AnchorPane>

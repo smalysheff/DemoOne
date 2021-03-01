@@ -3,6 +3,8 @@ package ru.sapteh.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.hibernate.SessionFactory;
@@ -23,6 +25,8 @@ public class ClientController {
 //        integerProperty.
 //    }
 
+    ObservableList<Character> observableListGender = FXCollections.observableArrayList('м', 'ж');
+    ObservableList<String> observableListGeneral = FXCollections.observableArrayList("Name", "Email", "Phone");
     private final SessionFactory factory;
 
     public ClientController(){
@@ -58,6 +62,12 @@ public class ClientController {
     @FXML
     private TableColumn <Client, String> tags;
 
+    //Filtered
+    @FXML
+    private ComboBox<Character> comboBoxGender;
+    @FXML
+    private ComboBox<String> comboBoxGeneral;
+
     //ComboBox size
     @FXML
     private ComboBox<Integer> comboBox;
@@ -70,7 +80,6 @@ public class ClientController {
 
     private int valuesFromDatabaseSize;
 
-
     //initialize method
     @FXML
     public void initialize(){
@@ -78,6 +87,19 @@ public class ClientController {
         //Init tableView
         initDataFromDatabase();
         initTableView();
+
+        //Filtered
+        comboBoxGender.setItems(observableListGender);
+        comboBoxGender.valueProperty().addListener(
+                (obj, oldValue, newValue) -> {
+                    FilteredList<Client> filteredData = new FilteredList<>(
+                            clientObservableList,
+                            s -> newValue.equals(s.getGender().getCode()));
+//                    SortedList<Client> sortedList = new SortedList<>(filteredData);
+//                    sortedList.comparatorProperty().bind(tableViewClient.comparatorProperty());
+                    tableViewClient.setItems(filteredData);
+                });
+        comboBoxGeneral.setItems(observableListGeneral);
 
         //ComboBox and pagination changed pages
         valuesFromDatabaseSize = clientObservableList.size();
@@ -163,7 +185,5 @@ public class ClientController {
 //            }
 //        });
     }
-
-//    private int
 
 }
