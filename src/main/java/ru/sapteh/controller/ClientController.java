@@ -18,6 +18,11 @@ import java.util.*;
 
 public class ClientController {
 
+//    void test(){
+//        IntegerProperty integerProperty = new SimpleIntegerProperty();
+//        integerProperty.
+//    }
+
     private final SessionFactory factory;
 
     public ClientController(){
@@ -53,10 +58,9 @@ public class ClientController {
     @FXML
     private TableColumn <Client, String> tags;
 
-
     //ComboBox size
     @FXML
-    private ComboBox<Integer> comboBoxSize;
+    private ComboBox<Integer> comboBox;
     @FXML
     private Label numberOfRecordsLbl;
 
@@ -65,7 +69,6 @@ public class ClientController {
     private Pagination pagination;
 
     private int valuesFromDatabaseSize;
-    private int totalPage;
 
 
     //initialize method
@@ -76,16 +79,15 @@ public class ClientController {
         initDataFromDatabase();
         initTableView();
 
-        //ComboBox
+        //ComboBox and pagination changed pages
         valuesFromDatabaseSize = clientObservableList.size();
-        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, valuesFromDatabaseSize);
-        comboBoxSize.setItems(options);
-        comboBoxSize.setValue(options.get(0));
-        comboBoxSize.valueProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                int valueComboBox = comboBoxSize.getValue();
-
-                totalPage = (int) (Math.ceil(valuesFromDatabaseSize * 1.0 / valueComboBox));
+        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, 200);
+        comboBox.setItems(options);
+        comboBox.setValue(options.get(0));
+        comboBox.valueProperty().addListener(
+            (obj, oldValue, newValue) -> {
+                int comboBoxValue = comboBox.getValue();
+                int totalPage = (int) (Math.ceil(valuesFromDatabaseSize * 1.0 / comboBoxValue));
 
                 //Pagination pages
                 pagination.setPageCount(totalPage);
@@ -100,12 +102,12 @@ public class ClientController {
                             tableViewClient.setItems(
                                     FXCollections.observableArrayList(
                                             clientObservableList.subList(
-                                                    valueComboBox * (newValue1.intValue() + 1)
-                                                            -  valueComboBox,
-                                                    valueComboBox * (newValue1.intValue() + 1)))
+                                                    comboBoxValue * (newValue1.intValue() + 1)
+                                                            - comboBoxValue,
+                                                    comboBoxValue * (newValue1.intValue() + 1)))
                             );
                         });
-            });
+    });
 
         //style pagination
         pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
@@ -149,17 +151,19 @@ public class ClientController {
         countVisit.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getClientServiceSet().size()));
 
         tags.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTags().iterator().next().getColor()));
-        tags.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                if(item != null || !empty){
-                    if(item.equalsIgnoreCase("green"))
-                        setStyle("-fx-background-color: #80ee80");
-                    if(item.equalsIgnoreCase("red"))
-                        setStyle("-fx-background-color: #db9898");
-                }
-            }
-        });
+//        tags.setCellFactory(column -> new TableCell<>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                if(item != null || !empty){
+//                    if(item.equalsIgnoreCase("green"))
+//                        setStyle("-fx-background-color: #80ee80");
+//                    if(item.equalsIgnoreCase("red"))
+//                        setStyle("-fx-background-color: #db9898");
+//                }
+//            }
+//        });
     }
+
+//    private int
 
 }

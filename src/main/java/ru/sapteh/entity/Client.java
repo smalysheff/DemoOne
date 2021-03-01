@@ -51,7 +51,7 @@ public class Client {
     private Set<ClientService> clientServiceSet;
 
 
-    @ManyToMany(mappedBy = "clients", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "clients", fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
     @Override
