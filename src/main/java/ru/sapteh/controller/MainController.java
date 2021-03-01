@@ -19,13 +19,12 @@ import ru.sapteh.entity.User;
 import ru.sapteh.service.UserDaoImpl;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MainController {
 
     private final SessionFactory factory;
-//    private User user;
     private List<User> users;
 
     public MainController(){
@@ -45,7 +44,6 @@ public class MainController {
     @FXML
     private Label alertLbl;
 
-
     @FXML
     public void onActionOpenProgram(ActionEvent event) {
         String login = loginField.getText();
@@ -57,8 +55,8 @@ public class MainController {
         if(!err.isEmpty()){
             alertLbl.setText(err);
         } else {
-            for (User user : users){
-                if(login.equalsIgnoreCase(user.getLogin()) && password.equals(user.getPassword()))
+            for (User user : users) {
+                if (login.equalsIgnoreCase(user.getLogin()) && password.equals(user.getPassword()))
                     initStage();
                 else
                     alertLbl.setText("login or password incorrect");
@@ -68,7 +66,9 @@ public class MainController {
 
     @FXML
     public void onActionExit(ActionEvent event){
+
         buttonExit.getScene().getWindow().hide();
+
     }
 
     @FXML
@@ -78,7 +78,6 @@ public class MainController {
         initData();
 
     }
-
 
     private void initStage() {
         Stage stage = new Stage();
@@ -108,5 +107,4 @@ public class MainController {
         DAO<User, Integer> userDaoImpl = new UserDaoImpl(factory);
         users = userDaoImpl.findByAll();
     }
-
 }
