@@ -1,6 +1,8 @@
 package ru.sapteh.controller;
 
+import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -126,7 +128,7 @@ public class ClientController {
         String fileName = "test.pdf";
 //        Document document = new Document(PageSize.A4.rotate()); //landscape orientation
         Document document = new Document(); //portrait orientation
-        PdfWriter instance = PdfWriter.getInstance(document, new FileOutputStream(fileName));
+        PdfWriter.getInstance(document, new FileOutputStream(fileName));
 
         document.open();
 
@@ -137,8 +139,15 @@ public class ClientController {
         image.setAlignment(Element.ALIGN_RIGHT);
         document.add(image);
 
-        //simple paragraph
-        Paragraph paragraph = new Paragraph("This is testing from smal.ru");
+        //add paragraph
+//        BaseFont helvetica =
+//                BaseFont.createFont(
+//                        BaseFont.HELVETICA,
+//                        BaseFont.CP1250,
+//                        BaseFont.NOT_EMBEDDED);
+//        Font font = new Font(helvetica, 12);
+
+        Paragraph paragraph = new Paragraph("Car service customers Привет hello");
         paragraph.setSpacingAfter(20);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
@@ -146,54 +155,44 @@ public class ClientController {
         //--------------------------table--------------------------------
         //получить количество столбцов
         int numColumns = tableViewClient.getColumns().size();
-        System.out.println(numColumns);
-        PdfPTable table = new PdfPTable(numColumns);
+        PdfPTable table = new PdfPTable(12);
         //получить имена столбцов
         ObservableList<TableColumn<Client, ?>> columns = tableViewClient.getColumns();
 
-//        columns.forEach(c -> System.out.println(c.getText()));
+        columns.forEach(c ->
+                table.addCell(new PdfPCell(new Phrase(c.getText())))
+        );
 
-        int i = 0;
-        for(TableColumn<Client, ?> column : columns){
-            table.addCell(new PdfPCell(new Phrase(column.getText())));
-            i++;
-            System.out.println(column.getText());
-        }
-//        table.addCell(new PdfPCell(new Phrase("col1")));
-//        table.addCell(new PdfPCell(new Phrase("col2")));
-//        table.addCell(new PdfPCell(new Phrase("col3")));
-//        table.addCell(new PdfPCell(new Phrase("col4")));
-//        table.addCell(new PdfPCell(new Phrase("col5")));
-//        table.addCell(new PdfPCell(new Phrase("col6")));
-//        table.addCell(new PdfPCell(new Phrase("col7")));
-//        table.addCell(new PdfPCell(new Phrase("col8")));
-//        table.addCell(new PdfPCell(new Phrase("col9")));
-//        table.addCell(new PdfPCell(new Phrase("col10")));
-//        table.addCell(new PdfPCell(new Phrase("col11")));
-//        table.addCell(new PdfPCell(new Phrase("col12")));
+//        for(TableColumn<Client, ?> column : columns){
+//            table.addCell(new PdfPCell(new Phrase(column.getText())));
+//            System.out.println(column.getText());
+//        }
 
         table.setHeaderRows(1);
 
-        table.addCell("1.0");
-        table.addCell("1.1");
-        table.addCell("1.2");
-        table.addCell("2.1");
-        table.addCell("2.2");
-        table.addCell("2.3");
-        table.addCell("2.3");
-        table.addCell("2.3");
-        table.addCell("2.3");
-        table.addCell("2.3");
-        table.addCell("2.3");
-        table.addCell("2.3");
+        tableViewClient.getColumns().forEach(c -> {
+        });
+
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
+        table.addCell(new PdfPCell(new Phrase("1")));
 
         document.add(table);
 
         document.close();
         System.out.println("finished");
-
-
     }
+
     @FXML
     public void onActionExportToExcel(ActionEvent event) {
 
