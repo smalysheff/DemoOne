@@ -1,71 +1,1 @@
-package ru.sapteh.service;
-
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import ru.sapteh.dao.DAO;
-import ru.sapteh.entity.Client;
-import ru.sapteh.entity.ClientService;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
-
-public class ClientDaoImpTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-
-    @Test
-    public void lastDateTest(){
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);
-        List<Client> clients = clientDaoImpl.findByAll();
-        for (Client client : clients){
-            List<ClientService> collect = new ArrayList<>(client.getClientServiceSet());
-            if(collect.size() != 0) {
-                Date startTime = collect.stream().max(Comparator.comparing(ClientService::getStartTime)).get().getStartTime();
-                System.out.println(startTime);
-            }
-
-        }
-//        System.out.println(clientDaoImpl.findByAll());
-    }
-
-    @Test
-    public void create() {
-
-
-
-
-    }
-
-    @Test
-    public void findById() {
-    }
-
-    @Test
-    public void findByAll() {
-    }
-
-    @Test
-    public void update() {
-    }
-
-    @Test
-    public void delete() {
-    }
-}
+package ru.sapteh.service;import com.itextpdf.text.*;import com.itextpdf.text.pdf.PdfPCell;import com.itextpdf.text.pdf.PdfPTable;import com.itextpdf.text.pdf.PdfWriter;import javafx.event.ActionEvent;import org.hibernate.SessionFactory;import org.hibernate.cfg.Configuration;import org.junit.After;import org.junit.Before;import org.junit.Test;import ru.sapteh.controller.ClientController;import ru.sapteh.dao.DAO;import ru.sapteh.entity.Client;import ru.sapteh.entity.ClientService;import java.io.FileNotFoundException;import java.io.FileOutputStream;import java.io.IOException;import java.util.ArrayList;import java.util.Comparator;import java.util.Date;import java.util.List;public class ClientDaoImpTest {    @Before    public void setUp() throws Exception {    }    @After    public void tearDown() throws Exception {    }    @Test    public void lastDateTest(){        SessionFactory factory = new Configuration().configure().buildSessionFactory();        DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);        List<Client> clients = clientDaoImpl.findByAll();        for (Client client : clients){            List<ClientService> collect = new ArrayList<>(client.getClientServiceSet());            if(collect.size() != 0) {                Date startTime = collect.stream().max(Comparator.comparing(ClientService::getStartTime)).get().getStartTime();                System.out.println(startTime);            }        }//        System.out.println(clientDaoImpl.findByAll());    }    @Test    public void create() {    }    @Test    public void findById() {    }    @Test    public void findByAll() {    }    @Test    public void update() {    }    @Test    public void delete() {    }    @Test    public void onActionSaveToPdf() throws IOException, DocumentException {        String fileName = "test.pdf";        Document document = new Document();        PdfWriter.getInstance(document, new FileOutputStream(fileName));        document.open();        //add image in pdf        Image image = Image.getInstance("./src/main/resources/images/as_logo_pdf.png");        image.scaleAbsoluteHeight(70);        image.scaleAbsoluteWidth(130);        image.setAlignment(Element.ALIGN_RIGHT);        document.add(image);        //simple paragraph        Paragraph paragraph = new Paragraph("This is testing from smal.ru");        paragraph.setSpacingAfter(20);        paragraph.setAlignment(Element.ALIGN_CENTER);        document.add(paragraph);        //table        PdfPTable table = new PdfPTable(3);        table.addCell(new PdfPCell(new Phrase("Heading 1")));        table.addCell(new PdfPCell(new Phrase("Header 2")));        table.addCell(new PdfPCell(new Phrase("Header 2")));        table.setHeaderRows(1);        table.addCell("1.0");        table.addCell("1.1");        table.addCell("1.2");        table.addCell("2.1");        table.addCell("2.2");        table.addCell("2.3");        document.add(table);        document.close();        System.out.println("finished");    }}

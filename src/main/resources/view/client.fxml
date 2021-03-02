@@ -29,5 +29,7 @@
       <TextField layoutX="266.0" layoutY="20.0" prefHeight="25.0" prefWidth="292.0" />
       <Label layoutX="10.0" layoutY="24.0" text="General filter" />
       <Label layoutX="10.0" layoutY="64.0" text="Gender filter" />
+      <Button fx:id="btnSaveToPdf" onAction="#onActionSaveToPdf" layoutX="850.0" layoutY="20.0" mnemonicParsing="false" prefWidth="95.0" text="Save to PDF" AnchorPane.rightAnchor="20.0" />
+      <Button fx:id="btnExportToExcel" onAction="#onActionExportToExcel" layoutX="850.0" layoutY="60.0" mnemonicParsing="false" prefWidth="95.0" text="Export to Excel" AnchorPane.rightAnchor="20.0" />
    </children>
 </AnchorPane>

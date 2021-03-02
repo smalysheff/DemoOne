@@ -1,10 +1,14 @@
 package ru.sapteh.controller;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -16,8 +20,12 @@ import ru.sapteh.entity.ClientService;
 import ru.sapteh.service.ClientDaoImp;
 import ru.sapteh.service.ClientServiceDaoImp;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 import javafx.print.*;
 
@@ -82,6 +90,12 @@ public class ClientController {
     @FXML
     private Pagination pagination;
 
+    //Export data
+    @FXML
+    private Button btnSaveToPdf;
+    @FXML
+    private Button btnExportToExcel;
+
     private int valuesFromDatabaseSize;
 
     //initialize method
@@ -94,8 +108,7 @@ public class ClientController {
 
         //Filtered
         initGenderFilter();
-
-        comboBoxGeneral.setItems(observableListGeneral);
+        initGenderFilter();
 
         //ComboBox and pagination changed pages
         initComboBoxPagination();
@@ -104,8 +117,85 @@ public class ClientController {
         numberOfRecordsLbl.setText("number of records: " + valuesFromDatabaseSize);
 
 //        System.out.println(Printer.getAllPrinters());
+//        initPrinter();
+    }
 
-        initPrinter();
+    @FXML
+    public void onActionSaveToPdf(ActionEvent event) throws IOException, DocumentException {
+
+        String fileName = "test.pdf";
+//        Document document = new Document(PageSize.A4.rotate()); //landscape orientation
+        Document document = new Document(); //portrait orientation
+        PdfWriter instance = PdfWriter.getInstance(document, new FileOutputStream(fileName));
+
+        document.open();
+
+        //add image in pdf
+        Image image = Image.getInstance("./src/main/resources/images/as_logo_pdf.png");
+        image.scaleAbsoluteHeight(70);
+        image.scaleAbsoluteWidth(130);
+        image.setAlignment(Element.ALIGN_RIGHT);
+        document.add(image);
+
+        //simple paragraph
+        Paragraph paragraph = new Paragraph("This is testing from smal.ru");
+        paragraph.setSpacingAfter(20);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(paragraph);
+
+        //--------------------------table--------------------------------
+        //получить количество столбцов
+        int numColumns = tableViewClient.getColumns().size();
+        System.out.println(numColumns);
+        PdfPTable table = new PdfPTable(numColumns);
+        //получить имена столбцов
+        ObservableList<TableColumn<Client, ?>> columns = tableViewClient.getColumns();
+
+//        columns.forEach(c -> System.out.println(c.getText()));
+
+        int i = 0;
+        for(TableColumn<Client, ?> column : columns){
+            table.addCell(new PdfPCell(new Phrase(column.getText())));
+            i++;
+            System.out.println(column.getText());
+        }
+//        table.addCell(new PdfPCell(new Phrase("col1")));
+//        table.addCell(new PdfPCell(new Phrase("col2")));
+//        table.addCell(new PdfPCell(new Phrase("col3")));
+//        table.addCell(new PdfPCell(new Phrase("col4")));
+//        table.addCell(new PdfPCell(new Phrase("col5")));
+//        table.addCell(new PdfPCell(new Phrase("col6")));
+//        table.addCell(new PdfPCell(new Phrase("col7")));
+//        table.addCell(new PdfPCell(new Phrase("col8")));
+//        table.addCell(new PdfPCell(new Phrase("col9")));
+//        table.addCell(new PdfPCell(new Phrase("col10")));
+//        table.addCell(new PdfPCell(new Phrase("col11")));
+//        table.addCell(new PdfPCell(new Phrase("col12")));
+
+        table.setHeaderRows(1);
+
+        table.addCell("1.0");
+        table.addCell("1.1");
+        table.addCell("1.2");
+        table.addCell("2.1");
+        table.addCell("2.2");
+        table.addCell("2.3");
+        table.addCell("2.3");
+        table.addCell("2.3");
+        table.addCell("2.3");
+        table.addCell("2.3");
+        table.addCell("2.3");
+        table.addCell("2.3");
+
+        document.add(table);
+
+        document.close();
+        System.out.println("finished");
+
+
+    }
+    @FXML
+    public void onActionExportToExcel(ActionEvent event) {
 
     }
 
@@ -117,6 +207,10 @@ public class ClientController {
                             s -> newValue.equals(s.getGender().getCode()));
                     tableViewClient.setItems(filteredData);
                 });
+    }
+
+    private void initGeneralFilter(){
+        comboBoxGeneral.setItems(observableListGeneral);
     }
 
     private void initData(){
@@ -196,15 +290,18 @@ public class ClientController {
         pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
     }
 
-    public void initPrinter(){
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        PrinterJob printerJob = PrinterJob.createPrinterJob();
-        if(printerJob != null && printerJob.showPrintDialog(printPane.getScene().getWindow())){
-            boolean success = printerJob.printPage(pageLayout, printPane);
-            if(success){
-                printerJob.endJob();
-            }
-        }
-    }
+
+
+
+//    public void initPrinter(){
+//        Printer printer = Printer.getDefaultPrinter();
+//        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+//        PrinterJob printerJob = PrinterJob.createPrinterJob();
+//        if(printerJob != null && printerJob.showPrintDialog(printPane.getScene().getWindow())){
+//            boolean success = printerJob.printPage(pageLayout, printPane);
+//            if(success){
+//                printerJob.endJob();
+//            }
+//        }
+//    }
 }
