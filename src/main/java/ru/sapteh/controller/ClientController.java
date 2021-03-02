@@ -7,6 +7,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.sapteh.dao.DAO;
@@ -18,15 +19,14 @@ import ru.sapteh.service.ClientServiceDaoImp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javafx.print.*;
+
 public class ClientController {
 
-//    void test(){
-//        IntegerProperty integerProperty = new SimpleIntegerProperty();
-//        integerProperty.
-//    }
 
-    ObservableList<Character> observableListGender = FXCollections.observableArrayList('м', 'ж');
-    ObservableList<String> observableListGeneral = FXCollections.observableArrayList("Name", "Email", "Phone");
+
+    private final ObservableList<Character> observableListGender = FXCollections.observableArrayList('м', 'ж');
+    private final ObservableList<String> observableListGeneral = FXCollections.observableArrayList("Name", "Email", "Phone");
     private final SessionFactory factory;
 
     public ClientController(){
@@ -35,6 +35,10 @@ public class ClientController {
 
     private final ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
 
+    @FXML
+    private AnchorPane printPane;
+
+    //Table view data clients
     @FXML
     private TableView<Client> tableViewClient;
     @FXML
@@ -68,7 +72,7 @@ public class ClientController {
     @FXML
     private ComboBox<String> comboBoxGeneral;
 
-    //ComboBox size
+    //ComboBox filter size
     @FXML
     private ComboBox<Integer> comboBox;
     @FXML
@@ -85,61 +89,37 @@ public class ClientController {
     public void initialize(){
 
         //Init tableView
-        initDataFromDatabase();
+        initData();
         initTableView();
 
         //Filtered
-        comboBoxGender.setItems(observableListGender);
-        comboBoxGender.valueProperty().addListener(
-                (obj, oldValue, newValue) -> {
-                    FilteredList<Client> filteredData = new FilteredList<>(
-                            clientObservableList,
-                            s -> newValue.equals(s.getGender().getCode()));
-//                    SortedList<Client> sortedList = new SortedList<>(filteredData);
-//                    sortedList.comparatorProperty().bind(tableViewClient.comparatorProperty());
-                    tableViewClient.setItems(filteredData);
-                });
+        initGenderFilter();
+
         comboBoxGeneral.setItems(observableListGeneral);
 
         //ComboBox and pagination changed pages
-        valuesFromDatabaseSize = clientObservableList.size();
-        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, 200);
-        comboBox.setItems(options);
-        comboBox.setValue(options.get(0));
-        comboBox.valueProperty().addListener(
-            (obj, oldValue, newValue) -> {
-                int comboBoxValue = comboBox.getValue();
-                int totalPage = (int) (Math.ceil(valuesFromDatabaseSize * 1.0 / comboBoxValue));
-
-                //Pagination pages
-                pagination.setPageCount(totalPage);
-                pagination.setCurrentPageIndex(0);
-                tableViewClient.setItems(
-                        FXCollections.observableArrayList(
-                                clientObservableList.subList(pagination.getCurrentPageIndex(), newValue))
-
-                );
-                pagination.currentPageIndexProperty()
-                        .addListener((observable1, oldValue1, newValue1) -> {
-                            tableViewClient.setItems(
-                                    FXCollections.observableArrayList(
-                                            clientObservableList.subList(
-                                                    comboBoxValue * (newValue1.intValue() + 1)
-                                                            - comboBoxValue,
-                                                    comboBoxValue * (newValue1.intValue() + 1)))
-                            );
-                        });
-    });
-
-        //style pagination
-        pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        initComboBoxPagination();
 
         //Number of records label
         numberOfRecordsLbl.setText("number of records: " + valuesFromDatabaseSize);
 
+//        System.out.println(Printer.getAllPrinters());
+
+        initPrinter();
+
     }
 
-    private void initDataFromDatabase(){
+    private void initGenderFilter(){
+        comboBoxGender.setItems(observableListGender);
+        comboBoxGender.valueProperty().addListener(
+                (obj, oldValue, newValue) -> {
+                    FilteredList<Client> filteredData = new FilteredList<>(clientObservableList,
+                            s -> newValue.equals(s.getGender().getCode()));
+                    tableViewClient.setItems(filteredData);
+                });
+    }
+
+    private void initData(){
         DAO<Client, Integer> clientDaoImpl = new ClientDaoImp(factory);
         DAO<ClientService, Integer> clientServiceDaoImpl = new ClientServiceDaoImp(factory);
         clientServiceDaoImpl.findByAll();
@@ -168,7 +148,7 @@ public class ClientController {
                 return new SimpleObjectProperty<>(
                         new SimpleDateFormat("dd.MM.yyyy").format(startTime)
                 );
-            } return new SimpleObjectProperty<>("");
+            } return new SimpleObjectProperty<>("Не обслуживался !");
         });
         countVisit.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getClientServiceSet().size()));
 
@@ -186,4 +166,45 @@ public class ClientController {
 //        });
     }
 
+    private void initComboBoxPagination(){
+        valuesFromDatabaseSize = clientObservableList.size();
+        ObservableList<Integer> options = FXCollections.observableArrayList( 10, 20, 50, 200);
+        comboBox.setItems(options);
+        comboBox.setValue(options.get(0));
+        comboBox.valueProperty().addListener(
+                (obj, oldValue, newValue) -> {
+                    int comboBoxValue = comboBox.getValue();
+                    int totalPage = (int) (Math.ceil(valuesFromDatabaseSize * 1.0 / comboBoxValue));
+
+                    //Pagination pages
+                    pagination.setPageCount(totalPage);
+                    pagination.setCurrentPageIndex(0);
+                    tableViewClient.setItems(
+                            FXCollections.observableArrayList(
+                                    clientObservableList.subList(pagination.getCurrentPageIndex(), newValue)));
+                    pagination.currentPageIndexProperty()
+                            .addListener((observable1, oldValue1, newValue1) -> {
+                                tableViewClient.setItems(
+                                        FXCollections.observableArrayList(
+                                                clientObservableList.subList(
+                                                        comboBoxValue * (newValue1.intValue() + 1) - comboBoxValue,
+                                                        comboBoxValue * (newValue1.intValue() + 1))));
+                            });
+                });
+
+        //style pagination
+        pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+    }
+
+    public void initPrinter(){
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        if(printerJob != null && printerJob.showPrintDialog(printPane.getScene().getWindow())){
+            boolean success = printerJob.printPage(pageLayout, printPane);
+            if(success){
+                printerJob.endJob();
+            }
+        }
+    }
 }

@@ -54,10 +54,13 @@ public class MainController {
         if(password.isEmpty()) err += "password is empty";
         if(!err.isEmpty()){
             alertLbl.setText(err);
-        } else {
+        }
+        else {
             for (User user : users) {
-                if (login.equalsIgnoreCase(user.getLogin()) && password.equals(user.getPassword()))
+                if (login.equalsIgnoreCase(user.getLogin()) && password.equals(user.getPassword())) {
+                    buttonOpenProgram.getScene().getWindow().hide();
                     initStage();
+                }
                 else
                     alertLbl.setText("login or password incorrect");
             }
@@ -66,9 +69,7 @@ public class MainController {
 
     @FXML
     public void onActionExit(ActionEvent event){
-
         buttonExit.getScene().getWindow().hide();
-
     }
 
     @FXML
