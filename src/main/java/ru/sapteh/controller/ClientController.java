@@ -126,8 +126,8 @@ public class ClientController {
     public void onActionSaveToPdf(ActionEvent event) throws IOException, DocumentException {
 
         String fileName = "test.pdf";
-//        Document document = new Document(PageSize.A4.rotate()); //landscape orientation
-        Document document = new Document(); //portrait orientation
+        Document document = new Document(PageSize.A4.rotate()); //landscape orientation
+//        Document document = new Document(); //portrait orientation
         PdfWriter.getInstance(document, new FileOutputStream(fileName));
 
         document.open();
@@ -140,14 +140,12 @@ public class ClientController {
         document.add(image);
 
         //add paragraph
-//        BaseFont helvetica =
-//                BaseFont.createFont(
-//                        BaseFont.HELVETICA,
-//                        BaseFont.CP1250,
-//                        BaseFont.NOT_EMBEDDED);
-//        Font font = new Font(helvetica, 12);
+        String FONT = "./src/main/resources/font/arial.ttf";
 
-        Paragraph paragraph = new Paragraph("Car service customers Привет hello");
+        BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font font = new Font(bf,30,Font.NORMAL);
+
+        Paragraph paragraph = new Paragraph("Car service customers Привет hello", font);
         paragraph.setSpacingAfter(20);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
@@ -155,24 +153,23 @@ public class ClientController {
         //--------------------------table--------------------------------
         //получить количество столбцов
         int numColumns = tableViewClient.getColumns().size();
-        PdfPTable table = new PdfPTable(12);
+        PdfPTable table = new PdfPTable(numColumns);
         //получить имена столбцов
         ObservableList<TableColumn<Client, ?>> columns = tableViewClient.getColumns();
 
-        columns.forEach(c ->
-                table.addCell(new PdfPCell(new Phrase(c.getText())))
-        );
+//        columns.forEach(c ->
+//                table.addCell(new PdfPCell(new Phrase(c.getText())))
+//        );
 
-//        for(TableColumn<Client, ?> column : columns){
-//            table.addCell(new PdfPCell(new Phrase(column.getText())));
-//            System.out.println(column.getText());
-//        }
-
+        for(TableColumn<Client, ?> column : columns){
+            table.addCell(new PdfPCell(new Phrase(column.getText())));
+            System.out.println(column.getText());
+        }
         table.setHeaderRows(1);
 
         tableViewClient.getColumns().forEach(c -> {
         });
-
+        //test
         table.addCell(new PdfPCell(new Phrase("1")));
         table.addCell(new PdfPCell(new Phrase("1")));
         table.addCell(new PdfPCell(new Phrase("1")));
