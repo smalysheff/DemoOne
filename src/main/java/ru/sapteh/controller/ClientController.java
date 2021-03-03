@@ -2,6 +2,7 @@ package ru.sapteh.controller;
 
 import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -14,6 +15,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbookType;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.sapteh.dao.DAO;
@@ -191,7 +198,57 @@ public class ClientController {
     }
 
     @FXML
-    public void onActionExportToExcel(ActionEvent event) {
+    public void onActionExportToExcel(ActionEvent event) throws IOException {
+
+        XSSFWorkbook workbook = new XSSFWorkbook(XSSFWorkbookType.XLSX);
+
+        Sheet sheet = workbook.createSheet("Client");
+
+        //Header
+        Row header = sheet.createRow(0);
+
+        //Style header cell
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        XSSFFont font = workbook.createFont();
+        font.setFontHeightInPoints((short)14);
+        headerStyle.setFont(font);
+
+        //Header cell
+        ObservableList<TableColumn<Client, ?>> columns = tableViewClient.getColumns();
+        int count = 0;
+        for(TableColumn<Client, ?> column : columns){
+            Cell headerCell = header.createCell(count++);
+            headerCell.setCellValue(column.getText());
+            headerCell.setCellStyle(headerStyle);
+        }
+
+        //Next cell (tableViewClient.getItems())
+        for(Client client : tableViewClient.getItems()){
+            //
+        }
+        //первая строка
+        Row row = sheet.createRow(1);
+        //первый столбец
+        Cell cell = row.createCell(0);
+        cell.setCellValue("Test");
+//        cell.setCellStyle(style);
+        //второй столбец
+        cell = row.createCell(1);
+        cell.setCellValue("Test");
+//        cell.setCellStyle(style);
+        //и тд.
+
+
+        //write the content to a "temp.xlsx"
+        String fileLocation = "temp.xlsx";
+
+        FileOutputStream outputStream = new FileOutputStream(fileLocation);
+        workbook.write(outputStream);
+
+        workbook.close();
 
     }
 
