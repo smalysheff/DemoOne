@@ -145,7 +145,7 @@ public class ClientController {
         BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font font = new Font(bf,30,Font.NORMAL);
 
-        Paragraph paragraph = new Paragraph("Car service customers Привет hello", font);
+        Paragraph paragraph = new Paragraph("Клиенты автосервиса", font);
         paragraph.setSpacingAfter(20);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
@@ -162,7 +162,7 @@ public class ClientController {
 //        );
 
         for(TableColumn<Client, ?> column : columns){
-            table.addCell(new PdfPCell(new Phrase(column.getText())));
+            table.addCell(new PdfPCell(new Phrase(column.getText(), font)));
             System.out.println(column.getText());
         }
         table.setHeaderRows(1);
@@ -285,8 +285,6 @@ public class ClientController {
         //style pagination
         pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
     }
-
-
 
 
 //    public void initPrinter(){
